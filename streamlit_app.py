@@ -20,7 +20,7 @@ if openai_key:
 if openai_key and text:
     prompt = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=text,
+        prompt="encuentre el problema y la conclusión; ponga el problema en forma de pregunta",
         max_tokens=150,
         temperature=0.7,
         top_p=1
