@@ -1,24 +1,21 @@
 import streamlit as st
-import openai
 
-# Autenticar con la API de OpenAI
-openai.api_key = "mi-clave-api"
+st.title('GTN para encontrar el problema y la conclusión de un artículo')
 
-st.title("GPT-3 para resolver problemas y conclusiones")
+openai_key = st.text_input('Ingrese su clave de OpenAI')
 
-# Obtener el texto
-texto = st.text_area("Ingrese el texto a analizar")
-
-# Hacer una solicitud a la API de OpenAI
-prompt = {
-    "prompt": texto,
-    "temperature": 0.7,
-    "max_tokens": 256,
-}
-
-# Obtener el resultado de la API
-response = openai.Completion.create(**prompt)
-
-# Mostrar el resultado
-st.write("**Problema:**", response.choices[0]['text'])
-st.write("**Conclusion:**", response.choices[1]['text'])
+if openai_key:
+    st.write('Clave de OpenAI reconocida')
+    st.write('Por favor, ingrese el texto del artículo')
+    article_text = st.text_area('Artículo')
+    if article_text:
+        st.write('Procesando su artículo...')
+        # Aquí se usa la API de OpenAI para encontrar el problema y la conclusión
+        problem_question = '¿Cuál es el problema que se trata en el artículo?'
+        conclusion = 'Aquí está la conclusión que se obtuvo del artículo.'
+        st.write('Pregunta del problema:', problem_question)
+        st.write('Conclusión:', conclusion)
+    else:
+        st.write('Por favor, ingrese el texto del artículo.')
+else:
+    st.write('Por favor, ingrese su clave de OpenAI.')
