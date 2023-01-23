@@ -17,11 +17,11 @@ texto = st.text_area('Texto')
 # Botón para analizar
 if st.button('Analizar'):
     # Usar GPT-3 para encontrar el problema y la conclusión
-    prompt = f"Problem: {texto}"
+    prompt = f"Question: {texto}"
     response = openai.Completion.create(
         engine="davinci",
         prompt=prompt,
-        max_tokens=100,
+        max_tokens=200,
         temperature=0.7,
         top_p=1
     )
@@ -32,7 +32,7 @@ if st.button('Analizar'):
     response = openai.Completion.create(
         engine="davinci",
         prompt=prompt,
-        max_tokens=100,
+        max_tokens=200,
         temperature=0.7,
         top_p=1
     )
