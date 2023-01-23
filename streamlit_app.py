@@ -1,40 +1,31 @@
 import streamlit as st
 import openai
 
-# Pedir la API key de OpenAI al usuario
+# Pedir la clave de OpenAI
 st.title('Analizador de texto con GPT-3')
-st.write('Ingrese su API key de OpenAI para autenticarse:')
-api_key = st.text_input('API Key')
+st.write('Por favor ingrese su clave de OpenAI para autenticar la aplicación.')
+openai_key = st.text_input('Clave de OpenAI')
 
-# Botón para autenticarse
+# Botón para autenticar
 if st.button('Ingresar'):
-    openai.api_key = api_key
+    openai.api_key = openai_key
+    st.success('Clave de OpenAI ingresada exitosamente.')
 
-# Pedir el texto al usuario
-st.write('Ingrese el texto a analizar:')
-texto = st.text_area('Texto')
+# Pedir el texto a analizar
+if openai.api_key:
+    st.write('Ingrese el texto que desea analizar.')
+    text = st.text_area('Texto')
 
 # Botón para analizar
 if st.button('Analizar'):
-    # Usar GPT-3 para encontrar el problema y la conclusión
-    prompt = f"Question: {texto}"
-    response = openai.Completion.create(
+    # Analizar el texto con GPT-3
+    prompt = openai.Completion.create(
         engine="davinci",
-        prompt=prompt,
-        max_tokens=200,
+        prompt=text,
+        max_tokens=50,
         temperature=0.7,
         top_p=1
     )
-    problema = response['choices'][0]['text']
-    st.write('Problema:', problema)
-
-    prompt = f"Conclusion: {texto}"
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=prompt,
-        max_tokens=200,
-        temperature=0.7,
-        top_p=1
-    )
-    conclusion = response['choices'][0]['text']
-    st.write('Conclusión:', conclusion)
+    # Mostrar el resultado
+    st.write('Pregunta:', prompt.choices[0].text)
+    st.write('Conclusión:', prompt.choices[1].text)
