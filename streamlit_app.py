@@ -1,22 +1,24 @@
 import streamlit as st
 import openai
 
-# Obtener la API key de OpenAI
-openai_api_key = st.text_input("Ingrese su API Key de OpenAI")
+# Autenticar con la API de OpenAI
+openai.api_key = "mi-clave-api"
 
-# Inicializar el cliente OpenAI
-openai.api_key = openai_api_key
+st.title("GPT-3 para resolver problemas y conclusiones")
 
-# Pedir al usuario que ingrese la instrucción
-instruction = st.text_input("Ingrese la instrucción")
+# Obtener el texto
+texto = st.text_area("Ingrese el texto a analizar")
 
-# Realizar la consulta a OpenAI
-response = openai.Completion.create(
-    engine="davinci",
-    prompt=instruction,
-    max_tokens=100
-)
+# Hacer una solicitud a la API de OpenAI
+prompt = {
+    "prompt": texto,
+    "temperature": 0.7,
+    "max_tokens": 256,
+}
+
+# Obtener el resultado de la API
+response = openai.Completion.create(**prompt)
 
 # Mostrar el resultado
-st.write("La respuesta de GPT-3 es:")
-st.write(response['choices'][0]['text'])
+st.write("**Problema:**", response.choices[0]['text'])
+st.write("**Conclusion:**", response.choices[1]['text'])
