@@ -1,21 +1,32 @@
-import streamlit as st
+import streamlit as st 
+import openai
 
-st.title('GTN para encontrar el problema y la conclusión de un artículo')
+st.title("OpenAI GTP App") 
 
-openai_key = st.text_input('Ingrese su clave de OpenAI')
+# Pedir API key de OpenAI al usuario
+openai_api_key = st.text_input("Ingrese su API key de OpenAI")
 
-if openai_key:
-    st.write('Clave de OpenAI reconocida')
-    st.write('Por favor, ingrese el texto del artículo')
-    article_text = st.text_area('Artículo')
-    if article_text:
-        st.write('Procesando su artículo...')
-        # Aquí se usa la API de OpenAI para encontrar el problema y la conclusión
-        problem_question = '¿Cuál es el problema que se trata en el artículo?'
-        conclusion = 'Aquí está la conclusión que se obtuvo del artículo.'
-        st.write('Pregunta del problema:', problem_question)
-        st.write('Conclusión:', conclusion)
-    else:
-        st.write('Por favor, ingrese el texto del artículo.')
-else:
-    st.write('Por favor, ingrese su clave de OpenAI.')
+# Crear objeto API de OpenAI
+api = openai.API(
+    session_or_api_key=openai_api_key
+)
+
+# Pedir al usuario que ingrese el texto para analizar
+text_to_analyze = st.text_area("Escriba el texto para analizar")
+
+# Realizar el analisis con GTP
+completion = api.engine("davinci").completions.create(
+    prompt=text_to_analyze,
+    max_tokens=50,
+    temperature=0.7,
+    top_p=1,
+    stream="problems_and_solutions",
+    logprobs=3,
+)
+
+# Mostrar el resultado al usuario
+st.write("**Problem:**")
+st.write(completion.choices[0].text)
+
+st.write("**Conclusion:**")
+st.write(completion.choices[1].text)
